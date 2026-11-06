@@ -1,10 +1,14 @@
-# seed.py
 from datetime import datetime, timedelta
 import sqlite3
 
 DB_NAME = "meteo.db"
 
 def peupler_base():
+    """
+    Fonction permettant de peupler la db en développement 
+    (Inutile à ce jour car automatisé dans l'app)
+    """
+    
     conn = sqlite3.connect(DB_NAME)
     conn.execute("PRAGMA foreign_keys = ON;")
     cursor = conn.cursor()
@@ -33,7 +37,8 @@ def peupler_base():
     maintenant = datetime.now()
     releves_generes = []
 
-    for nom_ville, ville_id in ville_map.items():
+    for ville_id in ville_map.items():
+
         # Générer 5 relevés espacés de quelques heures
         for i in range(5):
             date_releve = maintenant - timedelta(hours=i * 6)

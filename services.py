@@ -1,10 +1,13 @@
-# services.py
 import requests
 from database import get_db_connection
 from schema import VilleModel
 from crud import inserer_ville, inserer_releve, recuperer_toutes_les_villes
 
 def executer_pipeline_meteo():
+    """
+    Fonction récupérant les données météorologiques des villes sélectionnées
+    Puis les enregistre en db
+    """
     
     conn = get_db_connection()
     resultats = []

@@ -1,6 +1,11 @@
 from schema import VilleModel
 
 def inserer_ville(conn, ville: VilleModel) -> int:
+    """
+    Ajoute une ville
+    Le nom, la longitude et la latitude sont nécessaires
+    L'id est généré automatiquement par SQLite
+    """
 
     cursor = conn.cursor()
     cursor.execute("SELECT id FROM villes WHERE nom = ?;", (ville.nom,))
@@ -18,6 +23,9 @@ def inserer_ville(conn, ville: VilleModel) -> int:
 
 
 def inserer_releve(conn, ville_id: int, temperature: float, vitesse_vent: float, date_heure: str):
+    """
+    Ajoute un relevé des températures et vents
+    """
     
     cursor = conn.cursor()
     cursor.execute(
@@ -30,12 +38,19 @@ def inserer_releve(conn, ville_id: int, temperature: float, vitesse_vent: float,
     conn.commit()
 
 def recuperer_toutes_les_villes(conn):
+    """
+    Listing de toutes les villes enregistrées en db
+    """
 
     cursor = conn.cursor()
     cursor.execute("SELECT id, nom, latitude, longitude FROM villes;")
     return cursor.fetchall()
 
 def recuperer_tous_les_releves(conn):
+    """
+    Listing de tout les relevés enregistrés en db
+    """
+
     cursor = conn.cursor()
     cursor.execute("""
         SELECT r.id, r.ville_id, v.nom as ville_nom, r.temperature, r.vitesse_vent, r.date_heure

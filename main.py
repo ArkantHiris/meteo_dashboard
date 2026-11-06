@@ -9,21 +9,30 @@ from crud import inserer_ville, recuperer_tous_les_releves
 
 app = FastAPI(
     title="Service Météo API",
-    description="Architecture professionnelle séparant Schémas, Services, CRUD et Routes.",
+    description="Architecture séparant Schémas, Services, CRUD et Routes.",
     version="3.0.0"
 )
 
 @app.on_event("startup")
 def startup_event():
+    """
+    Création de la base de donnée
+    """
     init_db()  # Crée les tables au démarrage de l'API
 
-@app.post("/pipeline/run", status_code=status.HTTP_200_OK, summary="Lancer la collecte ETL Open-Meteo")
+@app.post("/pipeline/run", status_code=status.HTTP_200_OK, summary="Lancer la collecte Open-Meteo")
 def run_pipeline():
+    """
+    Lancement de la pipeline (récolte data et sauvegarde)
+    """
     resultats = executer_pipeline_meteo()
     return {"message": "Pipeline exécuté avec succès", "details": resultats}
 
 @app.get("/villes", response_model=List[VilleRead], summary="Lister les villes enregistrées")
 def get_villes():
+    """
+    Permet un listing des villes sauvegardées en db
+    """
     conn = get_db_connection()
     villes = conn.execute("SELECT * FROM villes;").fetchall()
     conn.close()
@@ -32,6 +41,9 @@ def get_villes():
 
 @app.get("/releves", response_model=List[ReleveRead], summary="Récupérer l'historique de tous les relevés météo")
 def obtenir_releves():
+    """
+    Permet un listing des données de relevés
+    """
     conn = get_db_connection()
     releves = recuperer_tous_les_releves(conn)
     conn.close()
@@ -41,6 +53,9 @@ def obtenir_releves():
 
 @app.post("/villes", response_model=VilleRead, status_code=status.HTTP_201_CREATED, summary="Ajouter une nouvelle ville")
 def ajouter_ville(ville: VilleCreate): 
+    """
+    Permet l'ajout d'une nouvelle ville
+    """
 
     conn = get_db_connection()
 

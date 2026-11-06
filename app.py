@@ -25,8 +25,8 @@ if menu == "Tableau de bord":
     # Gestion du chargement et des erreurs d'API
     try:
         with st.spinner("Chargement des données depuis l'API..."):
-            resp_villes = requests.get(f"{API_URL}/villes", timeout=5)
-            resp_releves = requests.get(f"{API_URL}/releves", timeout=5)
+            resp_villes = requests.get(f"{API_URL}/villes", timeout=15)
+            resp_releves = requests.get(f"{API_URL}/releves", timeout=15)
             
             resp_villes.raise_for_status()
             resp_releves.raise_for_status()
@@ -161,7 +161,7 @@ elif menu == "Gestion des Villes":
         pass
 
 # Lancer la pipeline
-elif menu == "Lancer le pipeline ETL":
+elif menu == "Lancer le pipeline":
     st.header("⚡ Exécution du pipeline Météo")
     st.markdown("Déclenchez la récupération des données en direct via Open-Meteo pour l'ensemble de vos villes.")
     
